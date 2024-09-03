@@ -1,22 +1,14 @@
 import crypto from "crypto";
 
-import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { faCheck, faCopy, faRedo } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import { createNotification } from "@app/components/notifications";
 import { encryptSymmetric } from "@app/components/utilities/cryptography/crypto";
-import { Button, FormControl, IconButton, Input, Select, SelectItem } from "@app/components/v2";
-import { useTimedReset } from "@app/hooks";
+import { Button, FormControl, Input, Select, SelectItem } from "@app/components/v2";
 import { useCreateUserSecret } from "@app/hooks/api";
 import { UserSecretType } from "@app/hooks/api/userSecrets";
-// TODO @danicunhac: add UserSecretType to @app/hooks/api/userSecrets
-// import { SecretSharingAccessType } from "@app/hooks/api/secretSharing";
-
-// TODO @danicunhac: use this enum to determine the type of secret
 
 const schema = z.object({
   name: z.string().optional(),
@@ -29,11 +21,6 @@ const schema = z.object({
 export type FormData = z.infer<typeof schema>;
 
 export const UserSecretForm = () => {
-  const [secretLink, setSecretLink] = useState("");
-  const [, isCopyingSecret, setCopyTextSecret] = useTimedReset<string>({
-    initialState: "Copy to clipboard"
-  });
-
   const createUserSecret = useCreateUserSecret();
 
   const {
@@ -83,7 +70,6 @@ export const UserSecretForm = () => {
       }
       reset();
 
-      setCopyTextSecret("secret");
       createNotification({
         text: "Successfully created a user secret",
         type: "success"
@@ -97,16 +83,14 @@ export const UserSecretForm = () => {
     }
   };
 
-  const hasSecretLink = Boolean(secretLink);
-
-  return !hasSecretLink ? (
+  return (
     <form onSubmit={handleSubmit(onFormSubmit)}>
       <Controller
         control={control}
         name="name"
         render={({ field, fieldState: { error } }) => (
           <FormControl label="Name (Optional)" isError={Boolean(error)} errorText={error?.message}>
-            <Input {...field} placeholder="Resend Creds" type="text" />
+            <Input {...field} placeholder="Resend" type="text" />
           </FormControl>
         )}
       />
@@ -172,32 +156,5 @@ export const UserSecretForm = () => {
         Save secret
       </Button>
     </form>
-  ) : (
-    <>
-      <div className="mr-2 flex items-center justify-end rounded-md bg-white/[0.05] p-2 text-base text-gray-400">
-        <p className="mr-4 break-all">{secretLink}</p>
-        <IconButton
-          ariaLabel="copy icon"
-          colorSchema="secondary"
-          className="group relative ml-2"
-          onClick={() => {
-            navigator.clipboard.writeText(secretLink);
-            setCopyTextSecret("Copied");
-          }}
-        >
-          <FontAwesomeIcon icon={isCopyingSecret ? faCheck : faCopy} />
-        </IconButton>
-      </div>
-      <Button
-        className="mt-4 w-full bg-mineshaft-700 py-3 text-bunker-200"
-        colorSchema="primary"
-        variant="outline_bg"
-        size="sm"
-        onClick={() => setSecretLink("")}
-        rightIcon={<FontAwesomeIcon icon={faRedo} className="pl-2" />}
-      >
-        Share another secret
-      </Button>
-    </>
   );
 };

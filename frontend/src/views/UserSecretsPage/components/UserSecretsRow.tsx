@@ -8,7 +8,7 @@ import { Badge } from "@app/components/v2/Badge";
 import { TSharedSecret } from "@app/hooks/api/secretSharing";
 import { UsePopUpState } from "@app/hooks/usePopUp";
 
-export const ShareSecretsRow = ({
+export const UserSecretsRow = ({
   row,
   handlePopUpOpen
 }: {

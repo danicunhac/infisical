@@ -15,7 +15,7 @@ import {
 import { useGetSharedSecrets } from "@app/hooks/api/secretSharing";
 import { UsePopUpState } from "@app/hooks/usePopUp";
 
-import { ShareSecretsRow } from "./ShareSecretsRow";
+import { UserSecretsRow } from "./UserSecretsRow";
 
 type Props = {
   handlePopUpOpen: (
@@ -30,7 +30,7 @@ type Props = {
   ) => void;
 };
 
-export const ShareSecretsTable = ({ handlePopUpOpen }: Props) => {
+export const UserSecretsTable = ({ handlePopUpOpen }: Props) => {
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
   const { isLoading, data } = useGetSharedSecrets({
@@ -55,7 +55,7 @@ export const ShareSecretsTable = ({ handlePopUpOpen }: Props) => {
           {isLoading && <TableSkeleton columns={7} innerKey="shared-secrets" />}
           {!isLoading &&
             data?.secrets?.map((row) => (
-              <ShareSecretsRow key={row.id} row={row} handlePopUpOpen={handlePopUpOpen} />
+              <UserSecretsRow key={row.id} row={row} handlePopUpOpen={handlePopUpOpen} />
             ))}
         </TBody>
       </Table>

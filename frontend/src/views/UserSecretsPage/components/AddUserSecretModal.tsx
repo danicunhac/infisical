@@ -1,6 +1,7 @@
 import { Modal, ModalContent } from "@app/components/v2";
 import { UsePopUpState } from "@app/hooks/usePopUp";
-import { ShareSecretForm } from "@app/views/ShareSecretPublicPage/components";
+
+import { UserSecretForm } from "./UserSecretForm";
 
 type Props = {
   popUp: UsePopUpState<["createSharedSecret"]>;
@@ -23,7 +24,7 @@ export const AddUserSecretModal = ({ popUp, handlePopUpToggle }: Props) => {
         // TODO @danicunhac: Add a nice subtitle
         // subTitle="Once you share a secret, the share link is only accessible once."
       >
-        <ShareSecretForm
+        <UserSecretForm
           isPublic={false}
           value={(popUp.createSharedSecret.data as { value?: string })?.value}
         />

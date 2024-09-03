@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { createNotification } from "@app/components/notifications";
 import { Button, DeleteActionModal } from "@app/components/v2";
 import { usePopUp } from "@app/hooks";
-import { useDeleteSharedSecret } from "@app/hooks/api/secretSharing";
+import { useDeleteUserSecret } from "@app/hooks/api/userSecrets";
 
 import { AddUserSecretModal } from "./AddUserSecretModal";
 import { UserSecretsTable } from "./UserSecretsTable";
@@ -13,23 +13,23 @@ import { UserSecretsTable } from "./UserSecretsTable";
 type DeleteModalData = { name: string; id: string };
 
 export const UserSecretsSection = () => {
-  const deleteSharedSecret = useDeleteSharedSecret();
+  const deleteUserSecret = useDeleteUserSecret();
   const { popUp, handlePopUpToggle, handlePopUpClose, handlePopUpOpen } = usePopUp([
-    "createSharedSecret",
-    "deleteSharedSecretConfirmation"
+    "createUserSecret",
+    "deleteUserSecretConfirmation"
   ] as const);
 
   const onDeleteApproved = async () => {
     try {
-      deleteSharedSecret.mutateAsync({
-        sharedSecretId: (popUp?.deleteSharedSecretConfirmation?.data as DeleteModalData)?.id
+      deleteUserSecret.mutateAsync({
+        userSecretId: (popUp?.deleteUserSecretConfirmation?.data as DeleteModalData)?.id
       });
       createNotification({
         text: "Successfully deleted shared secret",
         type: "success"
       });
 
-      handlePopUpClose("deleteSharedSecretConfirmation");
+      handlePopUpClose("deleteUserSecretConfirmation");
     } catch (err) {
       console.error(err);
       createNotification({
@@ -52,7 +52,7 @@ export const UserSecretsSection = () => {
           colorSchema="primary"
           leftIcon={<FontAwesomeIcon icon={faPlus} />}
           onClick={() => {
-            handlePopUpOpen("createSharedSecret");
+            handlePopUpOpen("createUserSecret");
           }}
         >
           Add Secret
@@ -61,13 +61,13 @@ export const UserSecretsSection = () => {
       <UserSecretsTable handlePopUpOpen={handlePopUpOpen} />
       <AddUserSecretModal popUp={popUp} handlePopUpToggle={handlePopUpToggle} />
       <DeleteActionModal
-        isOpen={popUp.deleteSharedSecretConfirmation.isOpen}
+        isOpen={popUp.deleteUserSecretConfirmation.isOpen}
         title={`Delete ${
-          (popUp?.deleteSharedSecretConfirmation?.data as DeleteModalData)?.name || " "
+          (popUp?.deleteUserSecretConfirmation?.data as DeleteModalData)?.name || " "
         } shared secret?`}
-        onChange={(isOpen) => handlePopUpToggle("deleteSharedSecretConfirmation", isOpen)}
-        deleteKey={(popUp?.deleteSharedSecretConfirmation?.data as DeleteModalData)?.name}
-        onClose={() => handlePopUpClose("deleteSharedSecretConfirmation")}
+        onChange={(isOpen) => handlePopUpToggle("deleteUserSecretConfirmation", isOpen)}
+        deleteKey={(popUp?.deleteUserSecretConfirmation?.data as DeleteModalData)?.name}
+        onClose={() => handlePopUpClose("deleteUserSecretConfirmation")}
         onDeleteApproved={onDeleteApproved}
       />
     </div>

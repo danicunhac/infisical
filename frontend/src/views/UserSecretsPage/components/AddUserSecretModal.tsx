@@ -4,9 +4,9 @@ import { UsePopUpState } from "@app/hooks/usePopUp";
 import { UserSecretForm } from "./UserSecretForm";
 
 type Props = {
-  popUp: UsePopUpState<["createSharedSecret"]>;
+  popUp: UsePopUpState<["createUserSecret"]>;
   handlePopUpToggle: (
-    popUpName: keyof UsePopUpState<["createSharedSecret"]>,
+    popUpName: keyof UsePopUpState<["createUserSecret"]>,
     state?: boolean
   ) => void;
 };
@@ -14,9 +14,9 @@ type Props = {
 export const AddUserSecretModal = ({ popUp, handlePopUpToggle }: Props) => {
   return (
     <Modal
-      isOpen={popUp?.createSharedSecret?.isOpen}
+      isOpen={popUp?.createUserSecret?.isOpen}
       onOpenChange={(isOpen) => {
-        handlePopUpToggle("createSharedSecret", isOpen);
+        handlePopUpToggle("createUserSecret", isOpen);
       }}
     >
       <ModalContent
@@ -25,8 +25,7 @@ export const AddUserSecretModal = ({ popUp, handlePopUpToggle }: Props) => {
         // subTitle="Once you share a secret, the share link is only accessible once."
       >
         <UserSecretForm
-          isPublic={false}
-          value={(popUp.createSharedSecret.data as { value?: string })?.value}
+        // value={(popUp.createSharedSecret.data as { value?: string })?.value}
         />
       </ModalContent>
     </Modal>

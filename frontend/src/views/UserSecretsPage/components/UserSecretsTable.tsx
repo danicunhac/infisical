@@ -12,14 +12,14 @@ import {
   THead,
   Tr
 } from "@app/components/v2";
-import { useGetSharedSecrets } from "@app/hooks/api/secretSharing";
+import { useGetUserSecrets } from "@app/hooks/api/userSecrets";
 import { UsePopUpState } from "@app/hooks/usePopUp";
 
 import { UserSecretsRow } from "./UserSecretsRow";
 
 type Props = {
   handlePopUpOpen: (
-    popUpName: keyof UsePopUpState<["deleteSharedSecretConfirmation"]>,
+    popUpName: keyof UsePopUpState<["deleteUserSecretConfirmation"]>,
     {
       name,
       id
@@ -33,7 +33,7 @@ type Props = {
 export const UserSecretsTable = ({ handlePopUpOpen }: Props) => {
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
-  const { isLoading, data } = useGetSharedSecrets({
+  const { isLoading, data } = useGetUserSecrets({
     offset: (page - 1) * perPage,
     limit: perPage
   });
@@ -52,7 +52,7 @@ export const UserSecretsTable = ({ handlePopUpOpen }: Props) => {
           </Tr>
         </THead>
         <TBody>
-          {isLoading && <TableSkeleton columns={7} innerKey="shared-secrets" />}
+          {isLoading && <TableSkeleton columns={7} innerKey="user-secrets" />}
           {!isLoading &&
             data?.secrets?.map((row) => (
               <UserSecretsRow key={row.id} row={row} handlePopUpOpen={handlePopUpOpen} />
@@ -72,7 +72,7 @@ export const UserSecretsTable = ({ handlePopUpOpen }: Props) => {
           />
         )}
       {!isLoading && !data?.secrets?.length && (
-        <EmptyState title="No secrets shared yet" icon={faKey} />
+        <EmptyState title="No user secrets yet" icon={faKey} />
       )}
     </TableContainer>
   );

@@ -1,5 +1,6 @@
 import crypto from "crypto";
 
+import { useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -9,6 +10,7 @@ import { encryptSymmetric } from "@app/components/utilities/cryptography/crypto"
 import { Button, FormControl, Input, Select, SelectItem } from "@app/components/v2";
 import { useCreateUserSecret } from "@app/hooks/api";
 import { UserSecretType } from "@app/hooks/api/userSecrets";
+import { UsePopUpState } from "@app/hooks/usePopUp";
 
 const schema = z.object({
   name: z.string().optional(),
@@ -20,10 +22,17 @@ const schema = z.object({
 
 export type FormData = z.infer<typeof schema>;
 
-export const UserSecretForm = () => {
+type Props = {
+  row?: FormData;
+  handlePopUpClose: (
+    popUpName: keyof UsePopUpState<["createUserSecret", "updateUserSecret"]>
+  ) => void;
+};
+
+export const UserSecretForm = ({ handlePopUpClose, row }: Props) => {
   const createUserSecret = useCreateUserSecret();
 
-  console.log("🚀 ~ UserSecretForm ~ createUserSecret:", createUserSecret);
+  const isUpdateForm = useMemo(() => Boolean(row), [row]);
 
   const {
     control,
@@ -32,7 +41,9 @@ export const UserSecretForm = () => {
     formState: { isSubmitting }
   } = useForm<FormData>({
     resolver: zodResolver(schema),
-    defaultValues: {}
+    defaultValues: {
+      ...row
+    }
   });
 
   const onFormSubmit = async ({ name, username, password, secretType }: FormData) => {
@@ -58,7 +69,6 @@ export const UserSecretForm = () => {
           key
         });
 
-        // const { id } =
         await createUserSecret.mutateAsync({
           name,
           username,
@@ -77,6 +87,7 @@ export const UserSecretForm = () => {
         text: "Successfully created a user secret",
         type: "success"
       });
+      handlePopUpClose("createUserSecret");
     } catch (error) {
       console.error(error);
       createNotification({
@@ -156,7 +167,7 @@ export const UserSecretForm = () => {
         isLoading={isSubmitting}
         isDisabled={isSubmitting}
       >
-        Save secret
+        {isUpdateForm ? "Update secret" : "Save secret"}
       </Button>
     </form>
   );

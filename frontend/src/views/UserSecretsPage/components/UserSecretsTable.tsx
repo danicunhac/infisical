@@ -12,20 +12,24 @@ import {
   THead,
   Tr
 } from "@app/components/v2";
-import { useGetUserSecrets } from "@app/hooks/api/userSecrets";
+import { TUserSecret, useGetUserSecrets } from "@app/hooks/api/userSecrets";
 import { UsePopUpState } from "@app/hooks/usePopUp";
 
 import { UserSecretsRow } from "./UserSecretsRow";
 
 type Props = {
   handlePopUpOpen: (
-    popUpName: keyof UsePopUpState<["deleteUserSecretConfirmation"]>,
+    popUpName: keyof UsePopUpState<
+      ["deleteUserSecretConfirmation", "createUserSecret", "updateUserSecret"]
+    >,
     {
       name,
-      id
+      id,
+      row
     }: {
-      name: string;
-      id: string;
+      name?: string;
+      id?: string;
+      row?: TUserSecret;
     }
   ) => void;
 };
@@ -37,22 +41,20 @@ export const UserSecretsTable = ({ handlePopUpOpen }: Props) => {
     offset: (page - 1) * perPage,
     limit: perPage
   });
+
   return (
     <TableContainer>
       <Table>
         <THead>
           <Tr>
-            <Th className="w-5" />
             <Th>Name</Th>
-            <Th>Status</Th>
+            <Th>Type</Th>
             <Th>Created At</Th>
-            <Th>Valid Until</Th>
-            <Th>Views Left</Th>
             <Th aria-label="button" className="w-5" />
           </Tr>
         </THead>
         <TBody>
-          {isLoading && <TableSkeleton columns={7} innerKey="user-secrets" />}
+          {isLoading && <TableSkeleton columns={3} innerKey="user-secrets" />}
           {!isLoading &&
             data?.secrets?.map((row) => (
               <UserSecretsRow key={row.id} row={row} handlePopUpOpen={handlePopUpOpen} />

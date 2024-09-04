@@ -9,9 +9,12 @@ type Props = {
     popUpName: keyof UsePopUpState<["createUserSecret"]>,
     state?: boolean
   ) => void;
+  handlePopUpClose: (
+    popUpName: keyof UsePopUpState<["createUserSecret" | "updateUserSecret"]>
+  ) => void;
 };
 
-export const AddUserSecretModal = ({ popUp, handlePopUpToggle }: Props) => {
+export const AddUserSecretModal = ({ popUp, handlePopUpToggle, handlePopUpClose }: Props) => {
   return (
     <Modal
       isOpen={popUp?.createUserSecret?.isOpen}
@@ -19,14 +22,8 @@ export const AddUserSecretModal = ({ popUp, handlePopUpToggle }: Props) => {
         handlePopUpToggle("createUserSecret", isOpen);
       }}
     >
-      <ModalContent
-        title="Add a Secret"
-        // TODO @danicunhac: Add a nice subtitle
-        // subTitle="Once you share a secret, the share link is only accessible once."
-      >
-        <UserSecretForm
-        // value={(popUp.createUserSecret.data as { value?: string })?.value}
-        />
+      <ModalContent title="Add a Secret">
+        <UserSecretForm handlePopUpClose={handlePopUpClose} />
       </ModalContent>
     </Modal>
   );

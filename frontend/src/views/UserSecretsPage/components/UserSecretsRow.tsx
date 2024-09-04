@@ -12,28 +12,31 @@ export const UserSecretsRow = ({
 }: {
   row: TUserSecret;
   handlePopUpOpen: (
-    popUpName: keyof UsePopUpState<["deleteUserSecretConfirmation"]>,
+    popUpName: keyof UsePopUpState<
+      ["deleteUserSecretConfirmation", "createUserSecret", "updateUserSecret"]
+    >,
     {
       name,
-      id
+      id,
+      row
     }: {
-      name: string;
-      id: string;
+      name?: string;
+      id?: string;
+      row?: TUserSecret;
     }
   ) => void;
 }) => {
+  // TODO @danicunhac: Decrypt row value so we can send it to the form and display it in order to update
+
   return (
     <Tr
       key={row.id}
       className="h-10 cursor-pointer transition-colors duration-300 hover:bg-mineshaft-700"
+      onClick={() => handlePopUpOpen("updateUserSecret", { row })}
     >
       <Td>{row.name ? `${row.name}` : "-"}</Td>
-      {/* <Td>
-        <Badge variant={isExpired ? "danger" : "success"}>{isExpired ? "Expired" : "Active"}</Badge>
-      </Td> */}
+      <Td>Credentials</Td>
       <Td>{`${format(new Date(row.createdAt), "yyyy-MM-dd - HH:mm a")}`}</Td>
-      {/* <Td>{format(new Date(row.expiresAt), "yyyy-MM-dd - HH:mm a")}</Td>
-      <Td>{row.expiresAfterViews !== null ? row.expiresAfterViews : "-"}</Td> */}
       <Td>
         <IconButton
           onClick={(e) => {

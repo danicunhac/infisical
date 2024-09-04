@@ -52,3 +52,9 @@ export enum SecretSharingAccessType {
   Anyone = "anyone",
   Organization = "organization"
 }
+
+export enum UserSecretType {
+  Credentials = "Credentials",
+  CreditCard = "creditCard",
+  SecureNote = "secureNote"
+}

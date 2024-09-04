@@ -75,6 +75,7 @@ import { TTelemetryServiceFactory } from "@app/services/telemetry/telemetry-serv
 import { TUserDALFactory } from "@app/services/user/user-dal";
 import { TUserServiceFactory } from "@app/services/user/user-service";
 import { TUserEngagementServiceFactory } from "@app/services/user-engagement/user-engagement-service";
+import { TUserSecretsServiceFactory } from "@app/services/user-secrets/user-secrets-service";
 import { TWebhookServiceFactory } from "@app/services/webhook/webhook-service";
 
 declare module "fastify" {
@@ -177,6 +178,7 @@ declare module "fastify" {
       userEngagement: TUserEngagementServiceFactory;
       externalKms: TExternalKmsServiceFactory;
       orgAdmin: TOrgAdminServiceFactory;
+      userSecrets: TUserSecretsServiceFactory;
     };
     // this is exclusive use for middlewares in which we need to inject data
     // everywhere else access using service layer

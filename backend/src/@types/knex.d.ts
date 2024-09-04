@@ -318,6 +318,9 @@ import {
   TUserGroupMembershipInsert,
   TUserGroupMembershipUpdate,
   TUsers,
+  TUserSecrets,
+  TUserSecretsInsert,
+  TUserSecretsUpdate,
   TUsersInsert,
   TUsersUpdate,
   TWebhooks,
@@ -507,6 +510,7 @@ declare module "knex/types/tables" {
       TSecretSharingInsert,
       TSecretSharingUpdate
     >;
+    [TableName.UserSecrets]: KnexOriginal.CompositeTableType<TUserSecrets, TUserSecretsInsert, TUserSecretsUpdate>;
     [TableName.RateLimit]: KnexOriginal.CompositeTableType<TRateLimit, TRateLimitInsert, TRateLimitUpdate>;
     [TableName.SecretTag]: KnexOriginal.CompositeTableType<TSecretTags, TSecretTagsInsert, TSecretTagsUpdate>;
     [TableName.SecretImport]: KnexOriginal.CompositeTableType<

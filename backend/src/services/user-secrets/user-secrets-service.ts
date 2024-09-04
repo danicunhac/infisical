@@ -3,14 +3,14 @@
 import { TPermissionServiceFactory } from "@app/ee/services/permission/permission-service";
 import { BadRequestError, UnauthorizedError } from "@app/lib/errors";
 
-import { TOrgDALFactory } from "../org/org-dal";
+// import { TOrgDALFactory } from "../org/org-dal";
 import { TUserSecretsDALFactory } from "./user-secrets-dal";
 import { TCreateUserSecretDTO, TDeleteUserSecretDTO, TGetUserSecretsDTO } from "./user-secrets-type";
 
 type TUserSecretsServiceFactoryDep = {
   permissionService: Pick<TPermissionServiceFactory, "getOrgPermission">;
   userSecretsDAL: TUserSecretsDALFactory;
-  orgDAL: TOrgDALFactory;
+  // orgDAL: TOrgDALFactory;
 };
 
 export type TUserSecretsServiceFactory = ReturnType<typeof userSecretsServiceFactory>;

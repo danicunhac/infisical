@@ -30,7 +30,7 @@ export const useGetUserSecrets = ({
       });
 
       const { data } = await apiRequest.get<{ secrets: TUserSecret[]; totalCount: number }>(
-        "/api/v1/user-secret/",
+        "/api/v1/user-secrets/",
         {
           params
         }
@@ -53,7 +53,7 @@ export const useGetUserSecretById = ({
     userSecretsKeys.getSecretById({ id: userSecretId, hashedHex, password }),
     async () => {
       const { data } = await apiRequest.post<TViewUserSecretResponse>(
-        `/api/v1/user-secret/${userSecretId}`,
+        `/api/v1/user-secrets/${userSecretId}`,
         {
           hashedHex,
           password

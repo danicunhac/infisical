@@ -25,7 +25,7 @@ export const AddUserSecretModal = ({ popUp, handlePopUpToggle }: Props) => {
         // subTitle="Once you share a secret, the share link is only accessible once."
       >
         <UserSecretForm
-        // value={(popUp.createSharedSecret.data as { value?: string })?.value}
+        // value={(popUp.createUserSecret.data as { value?: string })?.value}
         />
       </ModalContent>
     </Modal>

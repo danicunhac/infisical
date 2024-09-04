@@ -23,6 +23,8 @@ export type FormData = z.infer<typeof schema>;
 export const UserSecretForm = () => {
   const createUserSecret = useCreateUserSecret();
 
+  console.log("🚀 ~ UserSecretForm ~ createUserSecret:", createUserSecret);
+
   const {
     control,
     reset,
@@ -52,7 +54,7 @@ export const UserSecretForm = () => {
         }
 
         const { ciphertext, iv, tag } = encryptSymmetric({
-          plaintext: password,
+          plaintext: JSON.stringify({ username, password }),
           key
         });
 
@@ -68,6 +70,7 @@ export const UserSecretForm = () => {
           secretType
         });
       }
+
       reset();
 
       createNotification({
@@ -108,8 +111,8 @@ export const UserSecretForm = () => {
               className="w-full"
             >
               <SelectItem value={UserSecretType.Credentials}>Credentials</SelectItem>
-              <SelectItem value={UserSecretType.CreditCard}>Credit Card</SelectItem>
-              <SelectItem value={UserSecretType.SecureNote}>Secure Note</SelectItem>
+              {/* <SelectItem value={UserSecretType.CreditCard}>Credit Card</SelectItem>
+              <SelectItem value={UserSecretType.SecureNote}>Secure Note</SelectItem> */}
             </Select>
           </FormControl>
         )}

@@ -108,6 +108,7 @@ export const registerUserSecretsRouter = async (server: FastifyZodProvider) => {
     },
     onRequest: verifyAuth([AuthMode.JWT]),
     handler: async (req) => {
+      console.info("🚀 ~ handler: ~ req:", req.server.services);
       const userSecret = await req.server.services.userSecrets.createUserSecret({
         actor: req.permission.type,
         actorId: req.permission.id,

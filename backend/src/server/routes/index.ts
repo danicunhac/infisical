@@ -192,6 +192,8 @@ import { userDALFactory } from "@app/services/user/user-dal";
 import { userServiceFactory } from "@app/services/user/user-service";
 import { userAliasDALFactory } from "@app/services/user-alias/user-alias-dal";
 import { userEngagementServiceFactory } from "@app/services/user-engagement/user-engagement-service";
+import { userSecretsDALFactory } from "@app/services/user-secrets/user-secrets-dal";
+import { userSecretsServiceFactory } from "@app/services/user-secrets/user-secrets-service";
 import { webhookDALFactory } from "@app/services/webhook/webhook-dal";
 import { webhookServiceFactory } from "@app/services/webhook/webhook-service";
 
@@ -316,6 +318,7 @@ export const registerRoutes = async (
   const licenseDAL = licenseDALFactory(db);
   const dynamicSecretDAL = dynamicSecretDALFactory(db);
   const dynamicSecretLeaseDAL = dynamicSecretLeaseDALFactory(db);
+  const userSecretsDAL = userSecretsDALFactory(db);
 
   const kmsDAL = kmskeyDALFactory(db);
   const internalKmsDAL = internalKmsDALFactory(db);
@@ -1150,6 +1153,11 @@ export const registerRoutes = async (
     userDAL
   });
 
+  const userSecretsService = userSecretsServiceFactory({
+    permissionService,
+    userSecretsDAL
+  });
+
   await superAdminService.initServerCfg();
   //
   // setup the communication with license key server
@@ -1231,7 +1239,8 @@ export const registerRoutes = async (
     secretSharing: secretSharingService,
     userEngagement: userEngagementService,
     externalKms: externalKmsService,
-    orgAdmin: orgAdminService
+    orgAdmin: orgAdminService,
+    userSecrets: userSecretsService
   });
 
   const cronJobs: CronJob[] = [];
